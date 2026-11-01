@@ -1,23 +1,35 @@
-# Investment intelligence agent
+# Investment intelligence agents
 
-Status: design only; no agent is implemented.
+Status: **implemented** (Router, Opportunity Investigator, Price Analyst, Data Enrichment Agent,
+Evidence Reviser), with three guardrail layers and an investor chat. Full description:
+[docs/agents.md](../docs/agents.md).
 
-## Decision loop
+| Path | Contents |
+| --- | --- |
+| `orchestrator.py` | one question in, one checked answer out: input guardrail → router → specialist → output guardrail → reviser; deterministic fallback |
+| `llm.py` | the agent loop (Anthropic SDK), agent-as-a-tool delegation, web-search pause/resume |
+| `tools/` | read-only tools: the two model tools from `src/models`, plus neighbourhood statistics, review signals, data availability, ROI calculator, web search |
+| `guardrails/` | input (injection, size), tools (allow-list, schema, budget, policy, timeout), output (groundedness of every number, citations, policy) |
+| `prompts/` | versioned system prompts |
+| `evidence.py` | the evidence store: references E1, E2, … and the log for the groundedness harness |
+| `harness.py` | runs the 20 frozen cases in `evaluation/eval_sets/agent_cases_v1.jsonl` (criteria 7–8) |
+| `demo_data.py` | builds a clearly labelled synthetic demo repository when the real data bundle is absent |
+| `cli.py` | ask from the terminal |
 
-1. Receive an opportunity ID from the deterministic ranking.
-2. Inspect listing details, quality and model outputs.
-3. Choose comparable or neighborhood tools according to missing/contradictory evidence.
-4. Assess comparable relevance using property/location context.
-5. Stop when evidence is sufficient or the call/time limit is reached.
-6. Produce findings, supporting evidence IDs, risks, uncertainty and a status.
+## Decision loop (the Investigator)
 
-The agent's added value is contextual investigation and explaining contradictions. Fixed transformations and calculations remain ordinary code.
+1. `rank_opportunities` top or breakdown: what ranks where, and why.
+2. `listings` for the opportunity, then `review_signals` on its listings: what guests say.
+3. `neighbourhood_stats`: how the neighbourhood compares with the city.
+4. Missing data or outside context → the Data Enrichment Agent, called as a tool.
+5. Stop when the evidence is sufficient or the tool budget is reached.
+6. Brief: bottom line, the score and its components, evidence for, evidence against,
+   what to check next; every number cited [E#], and checked before it is shown.
 
 ## Output contract
 
-Planned fields: opportunity ID, status (`completed`, `insufficient_evidence`, `tool_failure`), findings with evidence IDs, comparable IDs, limitations, source dates and tool trace. Confidence must follow a documented policy, not an invented probability.
-
-## Failure and guardrails
-
-Tools are read-only and schema-validated. Bound calls, retries, execution time and cost. Tool failure or weak evidence preserves the deterministic investor report and identifies the missing evidence. Listing text cannot change instructions or authorize extra tools. Never fabricate occupancy, realized revenue or ROI. See `evaluation/` for the required comparison against the report without the agent.
-
+`TurnResult` (`orchestrator.py`): the answer; the intent and agent; the trace of events (agents,
+tool calls, guardrail decisions, verification); the evidence records (reference, tool, arguments,
+status, `evidence_id`, result); the verification report (groundedness, citation rate, ungrounded
+numbers, policy violations); usage (model calls, tokens) and time; and the mode (`agent`,
+`fallback`, `blocked`, `canned`).
