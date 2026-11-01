@@ -247,3 +247,7 @@ reports/amsterdam/
 reports/data_quality/
 reports/synthetic_demo/
 
+
+# agents: local demo data and the per-run evidence log
+demo_repo/
+evaluation/agent_evidence.jsonl

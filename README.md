@@ -70,6 +70,19 @@ flowchart TD
 
 The agent selects investigations, compares contextual evidence and explains contradictions. Cleaning, financial arithmetic, filtering, feature preparation, prediction and scoring remain in deterministic code. Investors can inspect the ranked table when the agent is unavailable.
 
+## Agents and investor chat
+
+Four agents investigate the ranked opportunities over read-only tools: a **Router**, an **Opportunity Investigator** (evidence briefs: for, against, what to check next), a **Price Analyst** (what-if prices; ROI only from the user's own numbers) and a **Data Enrichment Agent** (cities without a model, guest reviews, outside context from the web), which the other two call as a tool. Three guardrail layers are deterministic code: input (prompt injection), tools (allow-list, schema, budget, policy, timeout) and output (every number in an answer must match a tool result and be cited, checked before it is shown). Details: [docs/agents.md](docs/agents.md).
+
+```bash
+python -m pip install -r requirements-app.txt
+cp .env.example .env                       # add ANTHROPIC_API_KEY
+streamlit run src/app/streamlit_app.py     # or ./run_app.sh / run_app.bat
+python -m agents.harness                   # criteria 7-8: the 20 frozen investigation cases
+```
+
+The chat is in Hebrew. Without an API key it shows the deterministic opportunity table; without the data bundle it can build a synthetic demo repository, labelled as such.
+
 ## Opportunity definition and score
 
 **An opportunity is a combination of a neighbourhood, a room type and a number of bedrooms, and its score is calculated from three defined components: the expected nightly price, the expected booked nights per year and the certainty of the price estimate.**
@@ -148,13 +161,14 @@ Everyone contributes code and presents.
 | `data/sources.md` | Source provenance per city: URL, download date, snapshot, rows, price coverage, license, checksum |
 | `notebooks/` | Ordered EDA, preprocessing, modelling, evaluation and experiments |
 | `src/` | Reusable ingestion, features, models, analytics and application code |
-| `agents/` | Decision loop, tools, prompts and guardrails |
+| `agents/` | The agents, their tools, prompts and guardrails, the evaluation harness ([docs/agents.md](docs/agents.md)) |
+| `src/app/` | The investor chat (Streamlit, Hebrew) |
 | `evaluation/` | Frozen evaluation cases, groundedness and error analysis |
 | `models/` | Local model artifacts and version metadata |
 | `reports/` | Baseline comparisons, results, figures and the opportunity table |
 | `presentation/` | Final presentation and demo backup |
 | `docs/` | Architecture decisions and delivery plan |
-| `tests/` | Tests for the prediction-tool contract, city handling, engineered features and the opportunity score (`python -m pytest tests`) |
+| `tests/` | Tests for the prediction-tool contract, city handling, engineered features, the opportunity score, and the agents and guardrails (`python -m pytest tests`) |
 
 ## Notebooks and data flow
 

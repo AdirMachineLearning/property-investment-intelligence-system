@@ -1,0 +1,5 @@
+# The pipeline's libraries, plus what the agents and the chat need.
+-r requirements.txt
+anthropic>=0.69
+streamlit>=1.40
+python-dotenv>=1.0
