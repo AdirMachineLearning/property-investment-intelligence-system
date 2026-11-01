@@ -31,6 +31,7 @@ REVIEW_FILES = ["data/processed/reviews_clean.parquet", "data/processed/reviews_
 # Only these columns are ever loaded: no host names, URLs, photos or free text except the title
 DESCRIPTIVE_COLUMNS = [
     "location", "country", "id", "snapshot_date", "last_scraped", "name", "neighbourhood_cleansed",
+    "latitude", "longitude",
     "property_type", "room_type", "bedrooms", "accommodates", "bathrooms_text", "price",
     "price_numeric", "minimum_nights", "availability_365", "number_of_reviews_ltm",
     "reviews_last_365d", "days_since_last_review", "review_scores_rating", "review_scores_location",
