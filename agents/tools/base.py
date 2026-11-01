@@ -81,7 +81,19 @@ class ToolContext:
 
     def prediction_service(self):
         from src.models.predict import PredictionService
-        return self._load("predictions", lambda: PredictionService.load(self.root, verbose=False))
+
+        def load():
+            try:
+                return PredictionService.load(self.root, verbose=False)
+            except ValueError as e:
+                # Older artifacts in models/ were trained on another listings file (e.g.
+                # listings_master.parquet). The selected models use 03's feature file, so load
+                # every city from it; PredictionTool still picks the model 05 selected.
+                features = self.root / "data" / "processed" / "listings_features.parquet"
+                if "different files" not in str(e) or not features.exists():
+                    raise
+                return PredictionService.load(self.root, data_file=features, verbose=False)
+        return self._load("predictions", load)
 
     # ------------------------------------------------------------------ descriptive data
     def listings_file(self) -> Path | None:
@@ -116,6 +128,11 @@ class ToolContext:
             df["price_value"] = price.where(price > 0)
             if "location" not in df.columns:
                 df["location"] = "unknown"
+            # one spelling per city ("amsterdam" -> "Amsterdam"), matching the model and table names
+            from src.models.cities import CITY_CURRENCY, city_slug
+            canonical = {city_slug(c): c for c in CITY_CURRENCY}
+            df["location"] = df["location"].astype(str).map(
+                lambda c: canonical.get(city_slug(c), c.strip().title()) if c.strip() else "unknown")
             if "number_of_reviews_ltm" not in df.columns and "reviews_last_365d" in df.columns:
                 df["number_of_reviews_ltm"] = df["reviews_last_365d"]
             if "snapshot_date" in df.columns:          # one row per listing: its latest snapshot
