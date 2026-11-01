@@ -72,13 +72,13 @@ The agent selects investigations, compares contextual evidence and explains cont
 
 ## Agents and investor chat
 
-Four agents investigate the ranked opportunities over read-only tools: a **Router**, an **Opportunity Investigator** (evidence briefs: for, against, what to check next), a **Price Analyst** (what-if prices; ROI only from the user's own numbers) and a **Data Enrichment Agent** (cities without a model, guest reviews, outside context from the web), which the other two call as a tool. Three guardrail layers are deterministic code: input (prompt injection), tools (allow-list, schema, budget, policy, timeout) and output (every number in an answer must match a tool result and be cited, checked before it is shown). Details: [docs/agents.md](docs/agents.md).
+Four agents investigate the ranked opportunities over read-only tools: a **Router**, an **Opportunity Investigator** (evidence briefs: for, against, cross-checks such as booked nights vs Inside Airbnb's occupancy estimate, model reliability for the segment, registration status; what to check next), a **Price Analyst** (what-if prices; ROI only from the user's own numbers) and a **Data Enrichment Agent** (cities without a model, guest reviews, outside context from the web), which the other two call as a tool. Three guardrail layers are deterministic code: input (prompt injection), tools (allow-list, schema, budget, policy, timeout) and output (every number in an answer must match a tool result and be cited, checked before it is shown). Details: [docs/agents.md](docs/agents.md).
 
 ```bash
 python -m pip install -r requirements-app.txt
 cp .env.example .env                       # add ANTHROPIC_API_KEY
 streamlit run src/app/streamlit_app.py     # or ./run_app.sh / run_app.bat
-python -m agents.harness                   # criteria 7-8: the 20 frozen investigation cases
+python -m agents.harness                   # criteria 7-8: the frozen investigation cases
 ```
 
 The chat is in Hebrew. Without an API key it shows the deterministic opportunity table; without the data bundle it can build a synthetic demo repository, labelled as such.
