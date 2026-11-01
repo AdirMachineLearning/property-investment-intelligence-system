@@ -90,16 +90,17 @@ st.markdown(CSS, unsafe_allow_html=True)
 
 EXAMPLES = [
     "מהן 5 ההזדמנויות המובילות באמסטרדם, ולמה?",
-    "מה הראיות בעד ונגד ההזדמנות שבמקום הראשון?",
-    "כמה תכניס ללילה דירה שלמה עם 2 חדרי שינה ב-De Pijp ל-4 אורחים?",
-    "אם אקנה דירה כזו ב-450,000 EUR עם עלויות של 9,000 בשנה, מה התשואה?",
-    "אילו ערים יש בנתונים, ומה מצב ברצלונה?",
+    "למה חדר פרטי ב-Centrum-West נמצא במקום הראשון? מה הראיות בעד ונגד?",
+    "כמה תכניס ללילה דירה שלמה עם 2 חדרי שינה ב-De Pijp ל-4 אורחים, וכמה לסמוך על ההערכה?",
+    "אם אקנה דירה כזו ב-650,000 EUR עם עלויות של 12,000 בשנה, מה התשואה?",
+    "עד כמה מודל המחיר אמין, ובאילו מקרים הוא חלש?",
     "מה הרגולציה על השכרה לטווח קצר באמסטרדם?",
 ]
 TOOL_HE = {"rank_opportunities": "דירוג הזדמנויות", "predict_listing_price": "מודל מחיר",
            "neighbourhood_stats": "סטטיסטיקת שכונה", "review_signals": "ביקורות אורחים",
            "data_availability": "זמינות נתונים", "roi_calculator": "מחשבון תשואה",
-           "web_search": "חיפוש ברשת", "web_source": "מקור מהרשת"}
+           "web_search": "חיפוש ברשת", "web_source": "מקור מהרשת", "model_card": "אמינות המודל",
+           "segment_profile": "פרופיל הקטע", "listing_profile": "פרופיל נכסים"}
 GUARD_HE = {"input": "חסימת קלט", "allow_list": "כלי לא מורשה", "schema": "קלט לא תקין לכלי",
             "budget": "תקציב קריאות", "policy": "מדיניות", "max_rounds": "מגבלת סבבים",
             "agent_unavailable": "סוכן לא זמין"}
@@ -159,7 +160,11 @@ with st.sidebar:
                                                        for c, t in tables.items()) or "לא נמצאה"))
     line(bool(status["price_models"]), "מודל מחיר: " + (", ".join(status["price_models"]) or "לא נמצא"))
     line(status["listings_rows"] > 0, f"נכסים בנתונים: {status['listings_rows']:,}")
-    line(bool(status["reviews_file"]), "ביקורות אורחים: " + ("זמינות" if status["reviews_file"] else "לא נמצאו"))
+    line(bool(status["reviews_file"]), "טקסט ביקורות: " + ("זמין" if status["reviews_file"] else
+                                                          "לא בריפו (משתמשים בציוני ביקורת ובפעילות)"))
+    caps = orch.capabilities
+    n_tools = sum(1 for t, why in caps.items() if why is None)
+    line(n_tools == len(caps), f"כלים זמינים לסוכנים: {n_tools} מתוך {len(caps)}")
     line(orch.llm is not None, "סוכנים: " + ("פעילים" if orch.llm is not None else "כבויים (אין מפתח API)"))
 
     if not tables:
