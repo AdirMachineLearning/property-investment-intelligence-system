@@ -1,0 +1,46 @@
+{
+  "table_version": "20261101_1724",
+  "created": "2026-11-01T17:24:06+00:00",
+  "segments": 124,
+  "ranked_segments": 46,
+  "listings": 5049,
+  "city": "Amsterdam",
+  "currency": "EUR",
+  "label": "PROVISIONAL",
+  "snapshot_date": "2026-06-15",
+  "model_version": "hist_gbm_amsterdam_20261024_1350",
+  "model_choice": "selected by 05_model_evaluation",
+  "split_version": "2a418f50c8dc",
+  "data_sha256": "55802f265b1da8df34d41c60689758d9f2d2d500c49320b279522fd7dd609103",
+  "test_listings_included": false,
+  "settings": {
+    "min_listings": 20,
+    "review_rate": 0.5,
+    "avg_stay_nights": 3.0,
+    "occupancy_cap": 0.7,
+    "bedroom_bands": [
+      [
+        "0-1",
+        1
+      ],
+      [
+        "2",
+        2
+      ],
+      [
+        "3+",
+        null
+      ]
+    ],
+    "reviews_col": "number_of_reviews_ltm",
+    "min_nights_col": "minimum_nights"
+  },
+  "score": "booked nights x expected nightly price x price certainty (per year)",
+  "n_folds": 5,
+  "oof_coverage": {
+    "listings": 5049,
+    "coverage": 0.7936224995048524,
+    "median_width": 217.0259167793581
+  },
+  "oof_mae": 77.80022370458687
+}

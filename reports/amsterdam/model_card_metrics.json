@@ -1,0 +1,103 @@
+{
+  "label": "EXPLORATORY",
+  "generated": "2026-10-29T11:55:38+00:00",
+  "preregistration_commit": "TODO: <git hash of the commit that froze this section>",
+  "city": "Amsterdam",
+  "unit": "EUR/night",
+  "data_source": "listings_features.parquet",
+  "data_sha256": "55802f265b1da8df34d41c60689758d9f2d2d500c49320b279522fd7dd609103",
+  "split_version": "2a418f50c8dc",
+  "selected_model": "hist_gbm",
+  "selection_reason": "hist_gbm is simpler than hist_gbm_tuned and their MAE difference CI [-1.16, +1.33] includes 0",
+  "provenance": {
+    "B0_global_median": "refit on train (deterministic)",
+    "B1_group_median": "refit on train (deterministic): training median by neighbourhood x room type (groups with at least 10 training listings), else room-type median, else global median",
+    "B1_simple": "refit on train (deterministic): training median by neighbourhood x room type, else global median",
+    "ridge": "artifact ridge_amsterdam_20261024_1350.joblib",
+    "hist_gbm": "artifact hist_gbm_amsterdam_20261024_1350.joblib",
+    "hist_gbm_tuned": "artifact hist_gbm_tuned_amsterdam_20261024_1350.joblib"
+  },
+  "test_rows": 1266,
+  "test_listings": 1266,
+  "metrics": {
+    "hist_gbm": {
+      "MAE": 75.01880671302173,
+      "MAE CI low": 70.44268037283878,
+      "MAE CI high": 79.71858321214195,
+      "RMSE": 112.98152822232095,
+      "RMSE CI low": 104.6245901509642,
+      "RMSE CI high": 121.27756992622241,
+      "bias": -19.146303538294656,
+      "bias CI low": -25.454614403306344,
+      "bias CI high": -12.981552199201479,
+      "typical_rel_err": 0.24631889160280318,
+      "typical_rel_err CI low": 0.23395517384562392,
+      "typical_rel_err CI high": 0.25794821971111687,
+      "hit_rate_20": 0.5655608214849921,
+      "hit_rate_20 CI low": 0.5394944707740916,
+      "hit_rate_20 CI high": 0.5940165876777249,
+      "MedAE": 47.049339668640215,
+      "R2_log": 0.7095042867054957
+    },
+    "B1_group_median": {
+      "MAE": 111.97628357030014,
+      "MAE CI low": 104.67082128751976,
+      "MAE CI high": 119.3831267772512,
+      "RMSE": 174.0822877605504,
+      "RMSE CI low": 159.5486591832538,
+      "RMSE CI high": 188.5040646005699,
+      "bias": -37.660967614533966,
+      "bias CI low": -47.432172788309636,
+      "bias CI high": -28.35062075434439,
+      "typical_rel_err": 0.39502613218810434,
+      "typical_rel_err CI low": 0.3740551917741624,
+      "typical_rel_err CI high": 0.4154594817549597,
+      "hit_rate_20": 0.38467614533965244,
+      "hit_rate_20 CI low": 0.3578199052132701,
+      "hit_rate_20 CI high": 0.4107424960505529,
+      "MedAE": 74.21000000000001,
+      "R2_log": 0.3417109874192108
+    }
+  },
+  "intervals": {
+    "coverage": {
+      "estimate": 0.8080568720379147,
+      "CI low": 0.7867298578199052,
+      "CI high": 0.8293838862559242
+    },
+    "mean_width": {
+      "estimate": 242.48265194124454,
+      "CI low": 235.97121500549602,
+      "CI high": 249.0548022150707
+    },
+    "interval_score": {
+      "estimate": 369.0154435008936,
+      "CI low": 341.6646474415036,
+      "CI high": 397.22628718128317
+    }
+  },
+  "interval_source": "artifact cqr_amsterdam_20261024_1350.joblib",
+  "hypotheses": {
+    "H1": {
+      "verdict": "supported",
+      "evidence": "ridge: -29.2% [-37.81, -28.22] EUR/night; hist_gbm: -33.0% [-42.09, -32.08] EUR/night; hist_gbm_tuned: -33.1% [-42.04, -32.26] EUR/night"
+    },
+    "H2": {
+      "verdict": "not supported",
+      "evidence": "hist_gbm_tuned gain vs B1: entire 33.8% vs other rooms 29.3%; dense 32.9% vs other 33.7% (point estimates; dense = top-quartile neighbourhoods by training listings: Centrum-Oost, Centrum-West, De Baarsjes - Oud-West, De Pijp - Rivierenbuurt, Westerpark, Zuid)"
+    },
+    "H3": {
+      "verdict": "supported",
+      "evidence": "coverage 80.8% [78.7%, 82.9%], target 77%\u201383%"
+    },
+    "H4": {
+      "verdict": "not testable",
+      "evidence": "single snapshot; repeat when the next scrape is processed"
+    },
+    "H5": {
+      "verdict": "supported",
+      "evidence": "MAE delta -3.78 [-6.17, -1.60]; Spearman rho of residuals 0.893 (threshold 0.9)"
+    }
+  },
+  "forward_test": null
+}

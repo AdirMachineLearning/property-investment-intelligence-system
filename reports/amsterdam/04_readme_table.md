@@ -1,0 +1,6 @@
+| Approach                        | MAE (EUR/night)      | RMSE (EUR/night)     | Response time         | Cost/query         |
+|:--------------------------------|:---------------------|:---------------------|:----------------------|:-------------------|
+| B1 hierarchical group median    | 112.0 [104.7, 119.4] | 174.1 [159.5, 188.5] | 1.9 ms                | ≈ 0                |
+| Learned model (hist_gbm)        | 75.0 [70.4, 79.7]    | 113.0 [104.6, 121.3] | 27.7 ms               | compute only (≈ 0) |
+| Deterministic report (no agent) | N/A                  | N/A                  | TODO (shared harness) | ≈ 0                |
+| Agent investigation             | N/A                  | N/A                  | TODO (shared harness) | TODO (API cost)    |
