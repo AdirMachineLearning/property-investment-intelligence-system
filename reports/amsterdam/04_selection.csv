@@ -1,0 +1,4 @@
+,MAE,H1,segments worse than B1 (n>=100),segment safe,eligible,delta vs hist_gbm_tuned CI
+ridge,79.22886081868748,True,-,True,True,"[+1.98, +6.82]"
+hist_gbm,75.01880671302173,True,-,True,True,"[-1.16, +1.33]"
+hist_gbm_tuned,74.89041387059356,True,-,True,True,

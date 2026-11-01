@@ -1,0 +1,7 @@
+,met,value
+"H1 (>=10% MAE reduction vs B1, CI excludes 0)",yes,"ridge: -29.2% [-37.81, -28.22] EUR/night; hist_gbm: -33.0% [-42.09, -32.08] EUR/night; hist_gbm_tuned: -33.1% [-42.04, -32.26] EUR/night"
+coverage within 77-83%,yes,"coverage 80.8% [78.7%, 82.9%], target 77%–83%"
+no segment (n>=100) coverage < 70%,NO,2 segment(s)
+segment safety (selected model),yes,-
+forward MAE within 10% of in-period,n/a,single snapshot
+single-row latency < 200 ms,yes,27.7 ms

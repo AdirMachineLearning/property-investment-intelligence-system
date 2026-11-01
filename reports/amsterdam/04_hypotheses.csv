@@ -1,0 +1,6 @@
+,verdict,evidence
+H1,supported,"ridge: -29.2% [-37.81, -28.22] EUR/night; hist_gbm: -33.0% [-42.09, -32.08] EUR/night; hist_gbm_tuned: -33.1% [-42.04, -32.26] EUR/night"
+H2,not supported,"hist_gbm_tuned gain vs B1: entire 33.8% vs other rooms 29.3%; dense 32.9% vs other 33.7% (point estimates; dense = top-quartile neighbourhoods by training listings: Centrum-Oost, Centrum-West, De Baarsjes - Oud-West, De Pijp - Rivierenbuurt, Westerpark, Zuid)"
+H3,supported,"coverage 80.8% [78.7%, 82.9%], target 77%–83%"
+H4,not testable,single snapshot; repeat when the next scrape is processed
+H5,supported,"MAE delta -3.78 [-6.17, -1.60]; Spearman rho of residuals 0.893 (threshold 0.9)"
